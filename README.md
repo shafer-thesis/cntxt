@@ -3,48 +3,48 @@ cntxt stuff
 
 To Do:
 ##twitter
--[x]get model twitter JSON data
+- [x]get model twitter JSON data
 
--[ ]finalize metrics to include
+- [ ]finalize metrics to include
 
--[x]make general twitter card w/ ng-repeat
+- [x]make general twitter card w/ ng-repeat
 
--[ ]figure out oauth
+- [ ]figure out oauth
 
--[ ]connect to live data
+- [ ]connect to live data
 
--[ ]finalize design components
+- [ ]finalize design components
 
 ##reddit
--[x]get model reddit JSON data
+- [x]get model reddit JSON data
 
--[ ]finalize metrics to include
+- [ ]finalize metrics to include
 
--[x]make general reddit card w/ ng-repeat
+- [x]make general reddit card w/ ng-repeat
 
--[ ]decide on authentication
+- [ ]decide on authentication
 
--[ ]connect to live data and figure out async issues
+- [ ]connect to live data and figure out async issues
 
--[ ]finalize design components
+- [ ]finalize design components
 
 
 ##general
--[ ]write up research aspects
+- [ ]write up research aspects
 
--[ ]solidify overall design
+- [ ]solidify overall design
 
--[ ]make external links open a new tab
+- [ ]make external links open a new tab
 
--[ ]use angular material design?
+- [ ]use angular material design?
 
 ##independent study
--[ ]find a series of major recent news events
+- [ ]find a series of major recent news events
 
--[ ]get data on all the reddit threads generated from event
+- [ ]get data on all the reddit threads generated from event
 
--[ ]analyze comments
+- [ ]analyze comments
 
--[ ]decide on other metrics to analyze
+- [ ]decide on other metrics to analyze
 
--[ ]research to see if reddit is valuable for news discussion or not
+- [ ]research to see if reddit is valuable for news discussion or not
