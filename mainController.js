@@ -1,6 +1,6 @@
 
 "use strict";
-var cntxt = angular.module('cntxt', ['ngRoute']);
+var cntxt = angular.module('cntxt', ['ngRoute', 'ngMaterial']);
 
 cntxt.controller('MainController', ['$scope', '$location', function($scope, $location) {
     // We defined an object called 'main' with a single property 'title' that is used

@@ -24,11 +24,13 @@
 #content-container {
 	margin-left: 2%;
 	margin-right:2%;
+
 }
 
 .content-header{
 	margin-top: 60px;
 	background: #f4f4f4;
+	min-height: 300px;
 }
 
 .input-link input{
@@ -51,7 +53,6 @@
 	color: #F4EFEF;
 	height: 40px;
 }
-
 
 input[type=text] {
     width: 55%;
@@ -81,12 +82,19 @@ input[type=text] {
 	position: fixed;
 }
 
+.footer.footer-results{
+	position: relative;
+}
+
+#tweets-subtitle{
+	text-align: center;
+}
+
 .input-link {
 	text-align: center;
 	margin-top: 15%;
 	color: black;
 }
-
 
 .input-link h2{
 	font-size: 1.4em;

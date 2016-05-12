@@ -1,4 +1,58 @@
+.md-card-image{
+  width: auto;
+  /*max-width: 150px;*/
+  height: auto;
+  max-height: 200px;
+  min-height: 200px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
 
+.md-card-profile-image{
+	height: 80px;
+	width: 80px;
+	position: absolute;
+	border-radius: 5px;
+	border: 4px white solid;
+	margin-top: -40px;
+	margin-left: 210px;
+}
+
+.md-card-content{
+	background-color: white;
+}
+
+.md-card-content h2{
+	font-size: 1.1em;
+}
+
+.twitter-user-link, .reddit-user-link{
+	cursor: pointer;
+}
+
+.md-actions{
+	max-height: 100px;
+}
+
+md-card{
+	background-color: #F1F1F1;
+	width: 350px;
+	border-radius: 5px;
+	display: inline-grid;
+}
+
+.twitter-md-card:hover, .reddit-md-card:hover{
+	box-shadow: 1px 4px 2px #888888;
+}
+
+.reddit-md-card{
+	width: 90%;
+	float: center;
+}
+
+.subreddit-link{
+	cursor: pointer;
+}
 
 #main-title{
 	margin-bottom: 0px;
@@ -18,47 +72,8 @@
 	margin-top: 1%;
 }
 
-
-
-body h1, h2 {
+body h1, body h2 {
 	font-family: HiraginoSans-W4, Sans-Serif;
 }
 
-.twitter-column {
-
-	float: right;
-}
-
-.twitter-card{
-	min-height: 100px;
-}
-
-.twitter-card img{
-	float:left;
-	display: inline;
-	width: 100px;
-	margin-right: 5px;
-}
-
-blockquote.display-box {
-  display: block;
-  padding: 16px;
-  margin: 10px 0;
-  max-width: 468px;
-  border: #ddd 1px solid;
-  border-top-color: #eee;
-  border-bottom-color: #bbb;
-  border-radius: 5px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-  font: bold 14px/18px Helvetica, Arial, sans-serif;
-  color: #000;
-  min-height: 100px;
-}
  
-blockquote.display-box p {
-  font: normal 18px/24px Georgia, "Times New Roman", Palatino, serif;
-  margin: 0 5px 10px 0;
-
-}
- 
-
