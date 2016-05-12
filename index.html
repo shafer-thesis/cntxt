@@ -1,0 +1,38 @@
+<!doctype html>
+<!--Defined everything in side the html tag to be an angular view template with the
+controller named MainController.-->
+<html ng-app="cntxt" ng-controller="MainController">
+    <head>
+        <!-- Example of setting the page title from the controller. The template can
+        be an expression so we have a default value if the controller doesn't define it-->
+        <title>cntxt</title>
+        <!-- Add Angular -->
+        <!-- <script type= "text/javascript" src=http://requirejs.org/docs/release/2.2.0/minified/require.js></script> -->
+        <script src="node_modules/angular/angular.js"></script>
+
+        
+        <script src="twitterResponse.js"></script>
+        <script src="redditResponse.js"></script>
+        <!--Include the main controller (MainController) and stylesheet -->
+        <script src="mainController.js"></script>
+        <link rel="stylesheet" type="text/css" href="main.css"/>
+
+        <script src="results/resultsController.js"></script>
+        <link rel="stylesheet" type="text/css" href="results/results.css"/>
+
+        <script src="node_modules/angular-route/angular-route.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+        <!--<div ng-include="'components/header/headerTemplate.html'" ng-controller="HeaderController"></div>-->
+    </head>
+    <body>
+    <header>
+        <div id="top-bar">
+            <h1><a href="#/">cntxt</a></h1>
+        </div>
+     </header>
+    <div ng-view></div>
+    <div ng-repeat="x in main.redditToDisplay"></div>
+    <div class="footer"></div>
+    </body>
+</html>

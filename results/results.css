@@ -1,0 +1,50 @@
+
+
+#main-title{
+	margin-bottom: 0px;
+	font-size: 6em;
+	position: relative;
+
+}
+
+.input-link {
+	text-align: center;
+	margin-top: 15%;
+	color: black;
+}
+
+.input-link h2{
+	font-size: 1.4em;
+	margin-top: 1%;
+}
+
+body h1, h2 {
+	font-family: HiraginoSans-W4, Sans-Serif;
+}
+
+.twitter-column {
+
+	float: right;
+
+}
+
+blockquote.twitter-tweet {
+  display: block;
+  padding: 16px;
+  margin: 10px 0;
+  max-width: 468px;
+  border: #ddd 1px solid;
+  border-top-color: #eee;
+  border-bottom-color: #bbb;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  font: bold 14px/18px Helvetica, Arial, sans-serif;
+  color: #000;
+}
+ 
+blockquote.twitter-tweet p {
+  font: normal 18px/24px Georgia, "Times New Roman", Palatino, serif;
+  margin: 0 5px 10px 0;
+}
+ 
+
