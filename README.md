@@ -4,10 +4,15 @@ cntxt stuff
 To Do:
 ##twitter
 []get model twitter JSON data
+
 []make general twitter card w/ ng-repeat
+
 []figure out oauth
+
 []connect to live data
+
 []finalize design components
+
 []finalize metrics to include
 
 ##reddit
