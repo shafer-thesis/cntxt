@@ -3,7 +3,7 @@ cntxt stuff
 
 To Do:
 ##twitter
-- [x]get model twitter JSON data
+- [x] get model twitter JSON data
 
 - [ ]finalize metrics to include
 
