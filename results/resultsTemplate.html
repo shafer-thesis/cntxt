@@ -1,34 +1,35 @@
 <div> 
 
-    <div class="input-link">
-        <h1 id="main-title">results</h1>
-        <h2 id="main-subtitle">here's what people are saying right now</h2>
+    <div class="content-header">
+        <h2>here's what people are saying right now</h2>
     </div>
 
   <div class="twitter-column">
+    <h3> Who is talking about this?</h3>
+    <div class="twitter-card" ng-repeat="tweet in main.twitterResponse.statuses  | orderBy: '-user.followers_count' ">
 
-    <h3> Top 5 accounts tweeting this link:</h3>
-    <div class="twitter-card" ng-repeat="tweet in main.twitterResponse.statuses  | orderBy: '-user.followers_count' | limitTo: '5'">
-      <blockquote class="twitter-tweet">
-       <p>{{tweet.text}}</p> 
+      <blockquote class="display-box">
+        <img ng-src={{tweet.user.profile_image_url}}>
+       <p>{{tweet.user.description}}</p> 
        -{{tweet.user.name}} (<a ng-href="http://www.twitter.com/{{tweet.user.screen_name}}">@{{tweet.user.screen_name}}</a>: {{tweet.user.followers_count}} followers)
       </blockquote>
+
     </div>
   </div>
+
   <div class="reddit-column">
-    <h3> Reddit Top Comments </h3>
-      <div class="reddit-card" ng-repeat="listing in main.redditResponse.data.children  | orderBy: '-data.score' ">
-      <blockquote class="twitter-tweet">
+  <h3> Reddit Top Comments </h3>
+    <div class="reddit-card" ng-repeat="listing in main.redditResponse.data.children  | orderBy: '-data.score' ">
+      <blockquote class="display-box">
       <p>{{listing.data.top_comment.body}}</p>
        <p>Comment Score: {{listing.data.top_comment.score}} Listing Score: {{listing.data.score}}</p> 
       </blockquote>
-    </div>
+  </div>
   
 
-    <!-- <div ng-repeat="listing in main.redditToDisplay"></div> -->
- <!--    <div ng-repeat="tweet in twitterToDisplay"></div> -->
 
-    <!-- <div class = "redditCard">{{main.reddit}}</div> -->
- <!--    <div class = "twitterCard">{{main.twitter}}</div> -->
 
+
+  </div>
+  <div class="footer footer-results"></div>
 </div>
