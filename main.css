@@ -21,6 +21,16 @@
 
 }
 
+#reddit-comments-chart{
+	width: 45%;
+	float: left;
+}
+
+#twitter-tweet-chart{
+	width: 45%;
+	float: right;
+}
+
 #content-container {
 	margin-left: 2%;
 	margin-right:2%;
