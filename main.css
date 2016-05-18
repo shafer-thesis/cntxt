@@ -1,58 +1,31 @@
-#top-bar{
-	width: 100%;
-	height: 60px;
-	background-color: #69CFB8;
-	color: white;
-	z-index: 100;
-	position: fixed;
-	top: 0px;
-	left: 0px;
+.reddit-card-content-container{
+	margin-right: 5%;
+	margin-left: 5%;
+	margin-bottom: 5px;
 }
 
-#top-bar a:visited, #top-bar a:link {
-	color: white;
-	text-decoration: none;
+#full-container{
+	float: center;
+	margin-left: 5%;
+	margin-right: 5%;
 }
 
-#top-bar h1{
-	margin-top: -8px;
-	margin-left: 20px;
-	font-size: 3em;
-
+.reddit-card{
+	width: 350px;
+/*	float:left;*/
 }
 
-#reddit-comments-chart{
-	width: 45%;
-	float: left;
+.twitter-card:hover, .reddit-card:hover{
+	box-shadow: 2px 4px 2px #888888;
 }
 
-#twitter-tweet-chart{
-	width: 45%;
-	float: right;
-}
+#urlInput-button{
 
-#content-container {
-	margin-left: 2%;
-	margin-right:2%;
-
-}
-
-.content-header{
-	margin-top: 60px;
-	background: #f4f4f4;
-	min-height: 300px;
-}
-
-.input-link input{
-	
-	align: center;
-}
-
-.input-link button{
 	margin: 0 auto;
-	display: block;
-	width: 20%;
+
+	width: 200px;
 	margin-top: 5px;
+	margin-bottom: 10px;
 	/* Rectangle 2: */
 	background: #7BDBC5;
 
@@ -62,55 +35,20 @@
 	font-size: 20px;
 	color: #F4EFEF;
 	height: 40px;
+
+
 }
 
-input[type=text] {
-    width: 55%;
+#urlInput {
+    width: 400px;
+    margin: 0 auto;
     padding: 12px 20px;
     border-radius: 7px;
     box-sizing: border-box;
     margin-bottom: 7px;
-}
-
-#main-title{
-	margin-bottom: 0px;
-	font-size: 6em;
-	position: relative;
 
 }
 
-.footer {
-	width: 100%;
-	height: 80px;
-	background-color: #69CFB8;
-	bottom: 0px;
-	left: 0px;
-
-}
-
-.footer.footer-search{
-	position: fixed;
-}
-
-.footer.footer-results{
-	position: relative;
-}
-
-#tweets-subtitle{
-	text-align: center;
-}
-
-.input-link {
-	text-align: center;
-	margin-top: 15%;
-	color: black;
-}
-
-.input-link h2{
-	font-size: 1.4em;
-	margin-top: 1%;
-}
-
-body h1, body h2 {
-	font-family: HiraginoSans-W4, Sans-Serif;
+#top-bar{
+	margin-left: 5%;
 }

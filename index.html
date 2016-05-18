@@ -1,64 +1,47 @@
 <!doctype html>
-<!--Defined everything in side the html tag to be an angular view template with the
-controller named MainController.-->
-<html ng-app="cntxt" ng-controller="MainController">
-    <head>
-        <!-- Example of setting the page title from the controller. The template can
-        be an expression so we have a default value if the controller doesn't define it-->
-        <title>cntxt</title>
-        <!-- Add Angular -->
-        <!-- <script type= "text/javascript" src=http://requirejs.org/docs/release/2.2.0/minified/require.js></script> -->
+<html ng-app="myApp" ng-controller="controller">
+<!-- load angular -->
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-        
-        <!-- chart builder thing from google! -->
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        
-        <script src="twitterResponse.js"></script>
-        <script src="redditResponse.js"></script>
-        <!--Include the main controller (MainController) and stylesheet -->
-        <script src="mainController.js"></script>
-        <link rel="stylesheet" type="text/css" href="main.css"/>
-
-        <script src="results/resultsController.js"></script>
-        <link rel="stylesheet" type="text/css" href="results/results.css"/>
-
-        <script src="node_modules/angular-route/angular-route.min.js"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-        <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-
-        <!-- Angular Stuff -->
-
+<!-- load angular-material js and css -->
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc5/angular-material.min.css">
-
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-
-<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc5/angular-material.min.js"></script>
- 
-<!-- Angular Material requires Angular.js Libraries -->
-
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
- 
-<!-- Angular Material Library -->
 <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc5/angular-material.min.js"></script>
 
- 
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc5/angular-material.min.css">
+<!-- load controller.js -->
+<script src="controller.js"></script>
 
-        <!--<div ng-include="'components/header/headerTemplate.html'" ng-controller="HeaderController"></div>-->
-    </head>
+<!-- load css -->
+<link rel="stylesheet" href="main.css">
+
+<!-- load chart resource -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <title>cntxt</title>   
     <body>
+
     <header>
         <div id="top-bar">
-            <h1><a href="#/">cntxt</a></h1>
+            <h1>cntxt</h1>
         </div>
      </header>
-     <div id= "content-container">
-        <div ng-view></div>
+     <div id="full-container">
+       <!--  <p>http://www.newstimes.com/local/article/Woman-mistaken-for-transgender-harassed-in-7471666.php</p> -->
+        <input ng-model="url" id="urlInput" placeholder="paste a link here" />
+        <input type="button" id ="urlInput-button" ng-click="getAllData()" value="Go" ng-disabled="url == null" />
+
+    <!--     <div ng-repeat="listing in redditResponse.data.children | orderBy: '-data.score' ">
+            <h1>{{listing.data.title}}: {{listing.data.score}}</h1> from /r/{{listing.data.subreddit}} by {{listing.data.author}} with {{listing.data.num_comments}} total comments
+            <p>{{listing.data.topComment}}</p>
+        </div> -->
+        <div id="reddit-comments-chart"></div>
+        <div class='md-padding' layout="column" layout-wrap>
+            <md-card class="reddit-card" ng-repeat="comment in reddit.topcomments | orderBy: '-score' ">
+                <div class="reddit-card-content-container">
+                    <h5>"{{comment.body}}"</h5> -{{comment.author}} in <a target="_blank" ng-href="http://www.reddit.com/r/{{comment.subreddit}}">/r/{{comment.subreddit}}</a> Score: {{comment.score}}
+                </div>
+            </md-card>
+        </div>
     </div>
+
     </body>
 </html>
