@@ -4,6 +4,12 @@
 	margin-bottom: 5px;
 }
 
+#connectButton, #signOut{
+float: right;
+margin-right: 10%;
+
+}
+
 #full-container{
 	float: center;
 	margin-left: 5%;
@@ -11,8 +17,18 @@
 }
 
 .reddit-card{
-	width: 350px;
+	width: 40%;
 /*	float:left;*/
+}
+
+/*.twitter-card{
+	width: 350px;
+	float: right;
+}*/
+
+.twitter-results-column{
+	width: 50%;
+	float: right;
 }
 
 .twitter-card:hover, .reddit-card:hover{
