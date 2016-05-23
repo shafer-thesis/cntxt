@@ -40,6 +40,8 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
             $scope.reddit.topcomments = [];
 
             $scope.reddit_chart_data = [];
+
+            $scope.twitter_chart_data = [];
             
             for(var i = 0;i<$scope.redditResponse['data']['children'].length; i++){
 
@@ -122,6 +124,7 @@ function getTopComment(subreddit, id, score){
 
            }); //end .then function
 	}//end getTopComment
+
 
 
 //begin twitter stuff

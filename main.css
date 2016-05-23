@@ -1,14 +1,84 @@
+
+html{ 
+  background: url(front_page/drawers_photo.jpeg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+#main_title{
+	text-align: center;
+	margin: 0 auto;
+	display: block;
+	margin-top: 15%;
+	font-family: HiraginoSans-W4, Sans-Serif;
+	color: white;
+}
+/*
+#main_title::before{
+	filter: blur(5px);
+}*/
+
+#main_title h1{
+	font-size: 8em;
+	margin-bottom: 50px;
+}
+
+#main_title h2{
+	margin-top: -20px;
+}
+
+#main_input{
+	width: 50%;
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+	vertical-align: middle;
+
+}
+
+#urlInput{
+	width: 80%;
+	border-radius: 7px;
+	display: block;
+	height: 40px;
+	margin: 0 auto;
+	font-family: HiraginoSans-W4, Sans-Serif;
+	text-align: center;
+}
+
+#urlInput-button, #signOut, #connectButton{
+	margin: 0 auto;
+	display: block;
+	width: 30%;
+	margin-top: 15px;
+	background: #7BDBC5;
+
+	border-radius: 7px;
+	/* Find the conversatio: */
+	font-family: HiraginoSans-W4, Sans-Serif;
+	font-size: 20px;
+	color: #F4EFEF;
+	height: 40px;
+}
+
+#urlInput-button:hover{
+	cursor: pointer;
+}
+
+body{
+	background-color: transparent;
+}
+
+/*above this line is new css*/
+
 .reddit-card-content-container{
 	margin-right: 5%;
 	margin-left: 5%;
 	margin-bottom: 5px;
 }
 
-#connectButton, #signOut{
-float: right;
-margin-right: 10%;
-
-}
 
 #full-container{
 	float: center;
@@ -16,9 +86,25 @@ margin-right: 10%;
 	margin-right: 5%;
 }
 
-.reddit-card{
-	width: 40%;
-/*	float:left;*/
+.results-top-dash{
+	width: 100%;
+	height: 100%;
+}
+
+.tool-bar{
+	background-color: #7BDBC5;	
+	color: white;
+}
+
+.tool-bar h1 {
+	margin-left: 8px;
+}
+
+
+
+.reddit-card, .twitter-card{
+background-color: white;
+border-radius: 5px;
 }
 
 /*.twitter-card{
@@ -35,36 +121,3 @@ margin-right: 10%;
 	box-shadow: 2px 4px 2px #888888;
 }
 
-#urlInput-button{
-
-	margin: 0 auto;
-
-	width: 200px;
-	margin-top: 5px;
-	margin-bottom: 10px;
-	/* Rectangle 2: */
-	background: #7BDBC5;
-
-	border-radius: 7px;
-	/* Find the conversatio: */
-	font-family: HiraginoSans-W4, Sans-Serif;
-	font-size: 20px;
-	color: #F4EFEF;
-	height: 40px;
-
-
-}
-
-#urlInput {
-    width: 400px;
-    margin: 0 auto;
-    padding: 12px 20px;
-    border-radius: 7px;
-    box-sizing: border-box;
-    margin-bottom: 7px;
-
-}
-
-#top-bar{
-	margin-left: 5%;
-}

@@ -1,0 +1,20 @@
+<!doctype html>
+
+<link rel="stylesheet" href="front_page.css">
+
+    <title>cntxt</title>   
+    <body>
+
+    <div id="main_title">
+        <h1>cntxt</h1>
+        <h2>connecting content and conversation</h2>
+    </div>
+
+    <div id="main_input">
+        <input ng-model="url" id="urlInput" placeholder="paste a link here" />
+        <button id="urlInput-button" ng-click="getAllData()" type= "button" class="btn btn-default" ng-disabled="url == null">Search</button>
+        <button ng-click="connectButton()" id="connectButton" type="button" class="btn btn-default">Sign in with Twitter</button>
+        <button ng-click="signOut()" id="signOut" type="button" class="btn btn-default" style="display:none;">Sign Out</button>
+    </div>
+    </body>
+</html>
