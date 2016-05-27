@@ -13,7 +13,12 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
 
     $scope.getAllData = function(){
     	getRedditData();
-      searchTweets();
+        searchTweets();
+
+
+
+        // var landing = document.getElementById("reddit-comments-chart");
+        // landing.scrollIntoView();
     	//drawRedditChart();
     	//getTwitterData();
 
@@ -28,12 +33,17 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
 
    function getRedditData(){
    		//this function also gathers the reddit_chart data and vizualizes it
-        console.log($scope.url);
 
-  		$http.get("http://www.reddit.com/api/info.json?url=" + $scope.url)
+        $scope.trimmedUrl = $scope.url.split('?');
+
+  		$http.get("http://www.reddit.com/api/info.json?url=" + $scope.trimmedUrl[0])
        		 .then(function(response) {
 
             $scope.redditResponse = response.data;
+
+            // for(var z = 0; z < response.data.length; z++){
+            //     console.log
+            // }
 
             $scope.reddit = [];
 
@@ -104,10 +114,12 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
     }// end getRedditData
 
 function getTopComment(subreddit, id, score){
-    var commentsToGet = 1;  
-      // if(score > 1000)
+        var commentsToGet = 4;
+        var minimumScore = 1;
+
+      // if(score > 50)
       //   {
-      //       commentsToGet = 3;
+      //       commentsToGet = 2;
       //   } else {
       //       commentsToGet = 1;
       //   }
@@ -115,12 +127,14 @@ function getTopComment(subreddit, id, score){
      
     $http.get(commentUrl)
          .then(function(response){
-            //console.log(response.data[1].data.children[0].data.body);
+           // console.log(response.data[1].data.children[0].data.body);
             for(var i = 0; i < commentsToGet; i++){
-                
+                console.log(response.data[1].data.children[i].data);
+                if(response.data[1].data.children[i].data.score > minimumScore){
                 $scope.reddit.topcomments.push(response.data[1].data.children[i].data);
-
-        			}
+                            }
+                        }
+        			
 
            }); //end .then function
 	}//end getTopComment
@@ -134,7 +148,7 @@ twitterService.initialize();
 
 function searchTweets(){
     twitterService.getMatchingTweets($scope.url).then(function(data){
-        console.log(data);
+        //console.log(data);
         $scope.tweets = data.statuses;
         //$scope.tweets = $scope.tweets.concat(data);
     }, function(){
