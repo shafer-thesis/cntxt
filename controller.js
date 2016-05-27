@@ -2,6 +2,7 @@
 app.controller('controller', function($scope, $http, $q, twitterService) {
 
     $scope.url = null
+    $scope.searchSent = false;
 
     document.getElementById("urlInput")
     .addEventListener("keyup", function(event) {
@@ -14,6 +15,7 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
     $scope.getAllData = function(){
     	getRedditData();
         searchTweets();
+        $scope.searchSent = true;
 
 
 
@@ -172,6 +174,8 @@ $scope.connectButton = function() {
             //if the authorization is successful, hide the connect button and display the tweets
             $('#connectButton').fadeOut(function() {
                 $('#getTimelineButton, #signOut').fadeIn();
+                $('#signIn').fadeOut();
+                $('#urlInput-button').fadeIn();
                 $scope.connectedTwitter = true;
             });
         } else {

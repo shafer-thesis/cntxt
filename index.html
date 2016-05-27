@@ -43,35 +43,45 @@
         <div id="main_input">
             <input ng-model="url" id="urlInput" placeholder="paste a link here" />
             <button id="urlInput-button" ng-click="getAllData()" type= "button" class="btn btn-default" ng-disabled="url == null || !connectedTwitter">Search</button>
+            <div ng-if="!connectedTwitter" ng-click="connectButton()" id="signIn">sign in with Twitter to start searching</div>
         </div>
     </header> 
     <body class="body_content">
 
-   <!--  <div class="results-top-dash"> -->
+    <div class="col-md-12">
         <div id="reddit-comments-chart"></div>
         <div id="twitter-comments-chart"></div>
-<!--     <div> -->
+    <div>
         <div class="col-md-6">
+            <md-card class="reddit-card" ng-if="searchSent"><h1 class="column-labels">Reddit Comments</h1></md-card>
             <md-card class="reddit-card" ng-repeat="comment in reddit.topcomments | orderBy: '-score' ">
                 <div class="reddit-card-content-container">
-                    <h5>"{{comment.body}}"</h5> -{{comment.author}} in <a target="_blank" ng-href="http://www.reddit.com/r/{{comment.subreddit}}">/
-                    r/{{comment.subreddit}}</a> Score: {{comment.score}} <a id = "seeReplies" target="_blank" ng-href="http://www.reddit.com/comments/{{comment.parent_id.split('_')[1]}}/_cntxt_/{{comment.id}}">See replies</a>
+                    <h4 class="reddit-comment-text">{{comment.body}}</h4>
+                    <h5 class="reddit-comment-details"> -{{comment.author}} in 
+                        <a target="_blank" ng-href="http://www.reddit.com/r/{{comment.subreddit}}">/r/{{comment.subreddit}}</a>
+                        Score: {{comment.score}}
+                    
+                        <a id = "seeReplies" target="_blank" ng-href="http://www.reddit.com/comments/{{comment.parent_id.split('_')[1]}}/_cntxt_/{{comment.id}}"><button class="seeReplies">See replies</button>
+                        </a>
+                    </h5>
                 </div>
             </md-card>   
         </div>
 
         <div class="col-md-6">
-           
+            <md-card class="twitter-card" ng-if="searchSent"><h1 class="column-labels">Tweets</h1></md-card>
             <md-card class="twitter-card" ng-repeat="t in tweets | orderBy: '-user.followers_count' | limitTo: '10' ">
 
 <!--                 <div class="col-xs-2 col-sm-1">
                     <img ng-src="{{t.user.profile_image_url}}" class="img-circle">
                 </div> -->
                 <div class="col-xs-10 col-sm-11">
-                <img ng-src="{{t.user.profile_image_url}}" class="img-circle">
-                    <small><a ng-href="https://twitter.com/{{t.user.screen_name}}"> @{{t.user.screen_name}}</a>: {{t.user.followers_count}} followers</small>
-                    <br> <span ng-bind-html="t.text"></span>
-                    <br> <span>RTs: {{t.retweet_count}} | Favs: {{t.favorite_count}}</span>
+                <div class="twitter-content">
+                    <img ng-src="{{t.user.profile_image_url}}" class="img-circle">
+                        <br><h4><span class="twitter-card-text" ng-bind-html="t.text"></span></h4>
+                        <br><h5 class="twitter-card-details"><a ng-href="https://twitter.com/{{t.user.screen_name}}"> @{{t.user.screen_name}}</a> | Followers: {{t.user.followers_count}}  | RTs: {{t.retweet_count}} | Favs: {{t.favorite_count}}</h5>
+
+                    </div>
                 </div>
 
             </md-card>
