@@ -50,7 +50,7 @@
     <body class="body_content">
 
     <div class="col-md-12">
-        <md-card ng-if="searchSent" class="twitter-stats">
+        <md-card ng-if="searchSent" class="reddit-card">
             <h3 id="reddit-chart-title">Top conversations on Reddit</h3>
             <div id="reddit-comments-chart"></div>
         </md-card>
@@ -58,7 +58,7 @@
 
     <div class="col-md-6">
         <md-card class="reddit-card" ng-if="searchSent"><h1 class="column-labels">Featured Reddit Comments</h1></md-card>
-        <md-card class="reddit-stats" ng-if="searchSent" id="reddit-stats">
+        <md-card class="reddit-card" ng-if="searchSent" id="reddit-stats">
             <div class="stats-wrapper">
                 <h3> Frequent words in featured comments:</h3>
                 <ol>
@@ -84,7 +84,7 @@
 
     <div class="col-md-6">
         <md-card class="twitter-card" ng-if="searchSent"><h1 class="column-labels">Featured Tweets</h1></md-card>
-        <md-card ng-if="searchSent" class="twitter-stats">
+        <md-card ng-if="searchSent" class="twitter-card">
             <div class = "stats-wrapper">
                 <h3>Most recent 100 tweets in: {{timeMeasureToDisplay}}</h3>
                 <h3>Time since last tweet: {{timeSinceLastTweet}}</h3>

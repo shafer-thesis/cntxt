@@ -1,6 +1,6 @@
 
 html{ 
-  background: url(front_page/drawers_photo.jpeg) no-repeat center center fixed; 
+  background: url(front_page/desk_photo.jpeg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -28,7 +28,7 @@ header{
 }
 
 .reddit-words-list{
-	
+
 }
 
 .footer{
@@ -42,7 +42,7 @@ header{
 
 #seeReplies button{
 	height: auto;
-	width: 100px;
+	width: 90px;
 }
 
 .twitter-stats, .reddit-stats{
@@ -64,7 +64,7 @@ header{
 	text-align: center;
 }
 
-.twititer-card-text{
+.twitter-card-text{
 	padding: 10px 20px 0px 10px;
 	font-weight: bold;
 }
@@ -75,6 +75,7 @@ header{
 
 
 #reddit-comments-chart{
+	background-color: rgba(255,255,255,0.9);
 	display: block;
 	width: 90%;
 	height: 500px;
@@ -111,7 +112,7 @@ header{
 	max-width: 90px;
 	margin-top: 25px;
 	margin-bottom: 10px;
-	margin-right: 10px;
+	margin-right: 15px;
 	margin-left: 10px;
 }
 
@@ -186,7 +187,7 @@ header{
 
 
 .reddit-card, .twitter-card{
-background-color: white;
+background-color: rgba(255,255,255,0.9);
 border-radius: 5px;
 }
 
@@ -200,7 +201,7 @@ border-radius: 5px;
 	float: right;
 }
 
-.twitter-card:hover, .reddit-card:hover .twitter-stats:hover{
+.twitter-card:hover, .reddit-card:hover{
 	box-shadow: 2px 4px 2px #888888;
 }
 

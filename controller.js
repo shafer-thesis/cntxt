@@ -81,6 +81,10 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
 
 		        chartArea: {width: '80%'},
 
+                backgroundColor: {fill:'transparent'},
+
+                colors: ['#7BDBC5'],
+
 		        hAxis: {
 
 		          title: 'Number of Comments',
@@ -148,7 +152,6 @@ function getTopComment(subreddit, id, score, number){
             $scope.sortedWordsDict.sort(function(first, second) {
                 return second[1] - first[1];
             });
-            console.log($scope.sortedWordsDict);
 
             // for(var m=0; m<sortedWordsDict.length; m++){
             //     var s = sortedWordsDict[m][0];
@@ -159,7 +162,7 @@ function getTopComment(subreddit, id, score, number){
             // }
 
             //console.log(sortedWordsDict);
-        }, 500);
+        }, 1000);
 
         }); //end .then function
 	}//end getTopComment
