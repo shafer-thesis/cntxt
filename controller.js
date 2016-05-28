@@ -176,17 +176,13 @@ $scope.tweets = []; //array of tweets
 twitterService.initialize();
 
 function searchTweets(){
-    twitterService.getMatchingTweets($scope.url).then(function(data){
+    twitterService.getMatchingTweets($scope.trimmedUrl[0]).then(function(data){
         //console.log(data);
         $scope.tweets = data.statuses;
-        $scope.twitter_chart_data = [];
         $scope.highestRT = 0;
         $scope.highestFAV = 0;
         $scope.timeMeasureToDisplay = 'N/A';
         $scope.timeSinceLastTweet = 'N/A';
-
-
-       
 
         for(var i = 0; i < data.statuses.length; i++){
         
