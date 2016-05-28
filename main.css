@@ -36,8 +36,9 @@ header{
 }
 
 #seeReplies{
-	float: right;
+	float: center;
 	margin-right: 25px;
+	margin-left: 10px;
 }
 
 #seeReplies button{
@@ -48,6 +49,7 @@ header{
 .twitter-stats, .reddit-stats{
 	background-color: white;
 	border-radius: 7px;
+	padding-left: 15px;
 }
 
 .stats-wrapper{
@@ -75,10 +77,9 @@ header{
 
 
 #reddit-comments-chart{
-	background-color: rgba(255,255,255,0.9);
 	display: block;
 	width: 90%;
-	height: 500px;
+	height: 400px;
 	margin-left: 5%;
 }
 
@@ -190,6 +191,7 @@ header{
 background-color: rgba(255,255,255,0.9);
 border-radius: 5px;
 }
+
 
 /*.twitter-card{
 	width: 350px;

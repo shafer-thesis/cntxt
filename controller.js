@@ -21,6 +21,7 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
             searchTweets();
             $scope.searchSent = true;
             $scope.invalidUrl = false;
+            $scope.sortedWordsDict = {};
         } else {
             $scope.invalidUrl = true;
         }
@@ -35,7 +36,7 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
         $scope.trimmedUrl = $scope.url.split('?');
 
   		$http.get("http://www.reddit.com/api/info.json?url=" + $scope.trimmedUrl[0])
-       		 .then(function(response) {
+       		 .then(function(response){
 
             $scope.redditResponse = response.data;
 
@@ -75,13 +76,11 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
 
 			var reddit_chart_options = {
 
-		      	legend: 'none',
+                legend: 'none',
 
-		        //title: 'Top Conversations on Reddit',
+                backgroundColor: {stroke:'null', fill:'null', strokeSize: '0'},
 
-		        chartArea: {width: '80%'},
-
-                backgroundColor: {fill:'transparent'},
+		        chartArea: {width: '80%', backgroundColor: 'transparent'},
 
                 colors: ['#7BDBC5'],
 
@@ -91,6 +90,8 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
 
 		          minValue: 0
 		        }
+
+                //backgroundColor:{fill: 'transparent'}
 		        //,vAxis: {}
 		    };
 
@@ -124,7 +125,7 @@ function getTopComment(subreddit, id, score, number){
                 if(response.data[1].data.children[i]){
                     if(response.data[1].data.children[i].data.score > minimumScore){
                         $scope.reddit.topcomments.push(response.data[1].data.children[i].data);
-                        var removePunctuation = (response.data[1].data.children[i].data.body.toLowerCase()).match(/\w+/g);//.replace(/[.,\/#!$%\^&\**;:{}=\-_`~\(()+|><?@[]]/g,"");
+                        var removePunctuation = (response.data[1].data.children[i].data.body.toLowerCase()).match(/\w+'*\w*/g);//.replace(/[.,\/#!$%\^&\**;:{}=\-_`~\(()+|><?@[]]/g,"");
                         //console.log(removePunctuation);
                         for(var j=0; j < removePunctuation.length; j++){
                                 $scope.mostUsedWords.push(removePunctuation[j]);
@@ -162,7 +163,7 @@ function getTopComment(subreddit, id, score, number){
             // }
 
             //console.log(sortedWordsDict);
-        }, 1000);
+        }, 500);
 
         }); //end .then function
 	}//end getTopComment
