@@ -42,10 +42,18 @@ header{
 	width: 100px;
 }
 
+.twitter-stats{
+	background-color: white;
+	border-radius: 7px;
+}
+
+.stats-wrapper{
+	padding: 15px 15px 15px 15px;
+}
 
 
 .reddit-comment-text, .column-labels{
-	padding: 0px 15px 15px 15px;
+	padding: 15px 15px 15px 15px;
 	font-weight: bold;
 }
 
@@ -59,19 +67,29 @@ header{
 }
 
 .reddit-comment-details, .twitter-card-details{
-	padding-left: 10%;
+	padding-left: 22%;
 }
 
 
 #reddit-comments-chart{
 	display: block;
+	width: 90%;
+	height: 500px;
+	margin-left: 5%;
 }
 
 .twitter-content{
 	/*padding: 15px 15px 15px 15px;*/
 }
 
-#signIn{
+#reddit-chart-title{
+	z-index: 100;
+	font-size: 2em;
+	margin-bottom: -50px;
+	text-align: center;
+}
+
+#signIn, #invalid{
 	color: white;
 	font-size: 2em;
 	margin-top: 10px;
@@ -179,7 +197,7 @@ border-radius: 5px;
 	float: right;
 }
 
-.twitter-card:hover, .reddit-card:hover{
+.twitter-card:hover, .reddit-card:hover, .twitter-stats:hover{
 	box-shadow: 2px 4px 2px #888888;
 }
 

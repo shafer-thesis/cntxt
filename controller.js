@@ -3,6 +3,7 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
 
     $scope.url = null
     $scope.searchSent = false;
+    $scope.invalidUrl = false;
 
     document.getElementById("urlInput")
     .addEventListener("keyup", function(event) {
@@ -13,21 +14,17 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
 	});
 
     $scope.getAllData = function(){
-    	getRedditData();
-        searchTweets();
-        $scope.searchSent = true;
 
 
-
-        // var landing = document.getElementById("reddit-comments-chart");
-        // landing.scrollIntoView();
-    	//drawRedditChart();
-    	//getTwitterData();
-
-    	// uncomment the next three lines to get ERR_INSECURE_RESPONSE from twitter api
-    	// dataService.getTwitterData().then(function(dataResponse) {
-     //    $scope.data = dataResponse;
-    	// });
+        if($scope.url.substring(0,4) === 'http' || $scope.url.substring(0,3) === 'www'){
+            console.log("substr(0,4)", $scope.url.substring(0,4));
+        	getRedditData();
+            searchTweets();
+            $scope.searchSent = true;
+            $scope.invalidUrl = false;
+        } else {
+            $scope.invalidUrl = true;
+        }
     }
 
     //load google charts for making charts
@@ -52,8 +49,6 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
             $scope.reddit.topcomments = [];
 
             $scope.reddit_chart_data = [];
-
-            $scope.twitter_chart_data = [];
             
             for(var i = 0;i<$scope.redditResponse['data']['children'].length; i++){
 
@@ -61,7 +56,7 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
 
                 $scope.reddit_chart_data.push({comments: listing.num_comments, subreddit: listing.subreddit});
 
-                if (listing.num_comments > 1){
+                if (listing.num_comments > 0){
                     
                     	listing.topcomment = getTopComment(listing.subreddit, listing.id, listing.score);
 
@@ -94,9 +89,9 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
 
 		      	legend: 'none',
 
-		        title: 'Active Conversations on Reddit',
+		        //title: 'Top Conversations on Reddit',
 
-		        chartArea: {width: '50%'},
+		        chartArea: {width: '80%'},
 
 		        hAxis: {
 
@@ -131,9 +126,10 @@ function getTopComment(subreddit, id, score){
          .then(function(response){
            // console.log(response.data[1].data.children[0].data.body);
             for(var i = 0; i < commentsToGet; i++){
-                console.log(response.data[1].data.children[i].data);
-                if(response.data[1].data.children[i].data.score > minimumScore){
-                $scope.reddit.topcomments.push(response.data[1].data.children[i].data);
+                if(response.data[1].data.children[i]){
+                    if(response.data[1].data.children[i].data.score > minimumScore){
+                        $scope.reddit.topcomments.push(response.data[1].data.children[i].data);
+                                }
                             }
                         }
         			
@@ -152,10 +148,106 @@ function searchTweets(){
     twitterService.getMatchingTweets($scope.url).then(function(data){
         //console.log(data);
         $scope.tweets = data.statuses;
-        //$scope.tweets = $scope.tweets.concat(data);
+        $scope.twitter_chart_data = [];
+        $scope.highestRT = 0;
+        $scope.highestFAV = 0;
+        $scope.timeMeasureToDisplay = 'N/A';
+        $scope.timeSinceLastTweet = 'N/A';
+
+
+       
+
+        for(var i = 0; i < data.statuses.length; i++){
+        
+            var tweet = data.statuses[i];
+            if(tweet.retweet_count > $scope.highestRT){
+                $scope.highestRT = tweet.retweet_count;
+            }
+            if(tweet.favorite_count > $scope.highestFAV){
+                $scope.highestFAV = tweet.favorite_count;
+            }
+        }
+
+        var firstTweet = new Date($scope.tweets[data.statuses.length-1].created_at);
+        var lastTweet = new Date($scope.tweets[0].created_at);
+
+        var timeDifferenceInSeconds = (Math.abs(firstTweet-lastTweet)/1000).toFixed(2);
+        var timeDifferenceInMinutes = (timeDifferenceInSeconds/60).toFixed(2);
+        var timeDifferenceInHours = (timeDifferenceInMinutes/60).toFixed(2);
+        //$scope.main.timeMeasureToDisplay = '';
+        var timeSinceLastTweet_s = (Math.abs(lastTweet-new Date())/1000).toFixed(2);
+        var timeSinceLastTweet_m = (timeSinceLastTweet_s/60).toFixed(2);
+        var timeSinceLastTweet_h = (timeSinceLastTweet_m/60).toFixed(2);
+
+        if(timeDifferenceInHours >= 1){
+            $scope.timeMeasureToDisplay = timeDifferenceInHours.toString()+' hours';
+        } else if (timeDifferenceInMinutes < 60 && timeDifferenceInMinutes > 1){
+            $scope.timeMeasureToDisplay = timeDifferenceInMinutes.toString()+' minutes';
+        } else {
+            $scope.timeMeasureToDisplay = timeDifferenceInSeconds.toString()+' seconds';
+        }
+
+        if(timeSinceLastTweet_h >= 1){
+            $scope.timeSinceLastTweet = timeSinceLastTweet_h.toString()+' hours';
+        } else if (timeSinceLastTweet_m < 60 && timeSinceLastTweet_m > 1){
+            $scope.timeSinceLastTweet = timeSinceLastTweet_m.toString()+' minutes';
+        } else {
+            $scope.timeSinceLastTweet = timeSinceLastTweet_s.toString()+' seconds';
+        }
+        $scope.stats = [["100 tweets in ", $scope.timeMeasureToDisplay], [$scope.timeSinceLastTweet, "since last tweet"], ["Highest number of retweets:", $scope.highestRT]];
+
+        //buildTwitterChart();
     }, function(){
         $scope.rateLimitError = true;
     })
+}
+
+
+function buildTwitterChart(){
+
+    var sorted_twitter_chart_data = $scope.twitter_chart_data.slice(0);
+
+            sorted_twitter_chart_data.sort(function(a,b){return b.retweet_count-a.retweet_count});
+
+            var arrayToDataTable_data_twitter = [ ['Username', 'Retweets'] ];
+
+            if(sorted_twitter_chart_data.length >=5){
+                var noMoreThanFive = 5;
+            } else {
+                var noMoreThanFive = sorted_twitter_chart_data.length;
+            }
+
+            for(var j = 0; j<noMoreThanFive; j++){
+
+                arrayToDataTable_data_twitter.push(["@"+sorted_twitter_chart_data[j].username, parseFloat(sorted_twitter_chart_data[j].retweets)]);
+
+            }
+
+            var twitter_chart_data = google.visualization.arrayToDataTable(arrayToDataTable_data_twitter);
+
+            var twitter_chart_options = {
+
+                legend: 'none',
+
+                title: 'Most Retweeted Tweets',
+
+                chartArea: {width: '100%'},
+
+                hAxis: {
+
+                  title: 'Number of Retweets',
+
+                  minValue: 0
+                }
+                ,vAxis: {
+                    minValue: 0
+                }
+            };
+
+            var twitter_chart = new google.visualization.BarChart(document.getElementById('twitter-comments-chart'));
+
+            twitter_chart.draw(twitter_chart_data, twitter_chart_options);
+
 }
 
 //using the OAuth authorization result get the latest 20 tweets from twitter for the user
