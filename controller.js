@@ -1,5 +1,6 @@
-  var app = angular.module('cntxt', ['ngSanitize','cntxt.services']);
-app.controller('controller', function($scope, $http, $q, twitterService) {
+var app = angular.module('cntxt', ['ngSanitize','cntxt.services']);
+
+app.controller('controller', function($scope, $http, $q, twitterService, $timeout) {
 
     $scope.url = null
     $scope.searchSent = false;
@@ -15,9 +16,7 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
 
     $scope.getAllData = function(){
 
-
         if($scope.url.substring(0,4) === 'http' || $scope.url.substring(0,3) === 'www'){
-            console.log("substr(0,4)", $scope.url.substring(0,4));
         	getRedditData();
             searchTweets();
             $scope.searchSent = true;
@@ -40,28 +39,17 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
 
             $scope.redditResponse = response.data;
 
-            // for(var z = 0; z < response.data.length; z++){
-            //     console.log
-            // }
-
             $scope.reddit = [];
-
             $scope.reddit.topcomments = [];
-
             $scope.reddit_chart_data = [];
             
             for(var i = 0;i<$scope.redditResponse['data']['children'].length; i++){
-
                 var listing = $scope.redditResponse['data']['children'][i]['data'];
-
                 $scope.reddit_chart_data.push({comments: listing.num_comments, subreddit: listing.subreddit});
-
                 if (listing.num_comments > 0){
                     
-                    	listing.topcomment = getTopComment(listing.subreddit, listing.id, listing.score);
-
+                    	listing.topcomment = getTopComment(listing.subreddit, listing.id, listing.score, i);
                 	}		
-
         		}
 
         	//sort chart data and format it correctly	
@@ -110,9 +98,13 @@ app.controller('controller', function($scope, $http, $q, twitterService) {
 
     }// end getRedditData
 
-function getTopComment(subreddit, id, score){
+function getTopComment(subreddit, id, score, number){
+
+        var ignore = ['and','the','to','a','of','for','as','i','with','it','is','on','that','this','can','in','be','has','if','was','at'];
         var commentsToGet = 4;
         var minimumScore = 1;
+        $scope.mostUsedWords = [];
+        $scope.wordsDictionary = {};
 
       // if(score > 50)
       //   {
@@ -124,17 +116,52 @@ function getTopComment(subreddit, id, score){
      
     $http.get(commentUrl)
          .then(function(response){
-           // console.log(response.data[1].data.children[0].data.body);
             for(var i = 0; i < commentsToGet; i++){
                 if(response.data[1].data.children[i]){
                     if(response.data[1].data.children[i].data.score > minimumScore){
                         $scope.reddit.topcomments.push(response.data[1].data.children[i].data);
-                                }
-                            }
+                        var removePunctuation = (response.data[1].data.children[i].data.body.toLowerCase()).match(/\w+/g);//.replace(/[.,\/#!$%\^&\**;:{}=\-_`~\(()+|><?@[]]/g,"");
+                        //console.log(removePunctuation);
+                        for(var j=0; j < removePunctuation.length; j++){
+                                $scope.mostUsedWords.push(removePunctuation[j]);
                         }
-        			
+                    }
+                }
+            }
 
-           }); //end .then function
+        $timeout(function(){
+            for(var k=0; k<$scope.mostUsedWords.length; k++){
+                var word = $scope.mostUsedWords[k];
+                if(ignore.indexOf(word) === -1){
+                    if(!$scope.wordsDictionary[word]){
+                        $scope.wordsDictionary[word] = 1;
+                    } else {
+                        $scope.wordsDictionary[word] += 1;
+                    }
+                }
+            }
+            $scope.sortedWordsDict = Object.keys($scope.wordsDictionary).map(function(key) {
+                return [key, $scope.wordsDictionary[key]];
+            });
+
+            // Sort the array based on the second element
+            $scope.sortedWordsDict.sort(function(first, second) {
+                return second[1] - first[1];
+            });
+            console.log($scope.sortedWordsDict);
+
+            // for(var m=0; m<sortedWordsDict.length; m++){
+            //     var s = sortedWordsDict[m][0];
+            //     //if(ignore.indexOf(s) === -1){
+            //         console.log(sortedWordsDict[m]);
+
+            //     //}
+            // }
+
+            //console.log(sortedWordsDict);
+        }, 500);
+
+        }); //end .then function
 	}//end getTopComment
 
 
@@ -194,70 +221,12 @@ function searchTweets(){
         } else {
             $scope.timeSinceLastTweet = timeSinceLastTweet_s.toString()+' seconds';
         }
-        $scope.stats = [["100 tweets in ", $scope.timeMeasureToDisplay], [$scope.timeSinceLastTweet, "since last tweet"], ["Highest number of retweets:", $scope.highestRT]];
 
-        //buildTwitterChart();
     }, function(){
         $scope.rateLimitError = true;
     })
 }
 
-
-function buildTwitterChart(){
-
-    var sorted_twitter_chart_data = $scope.twitter_chart_data.slice(0);
-
-            sorted_twitter_chart_data.sort(function(a,b){return b.retweet_count-a.retweet_count});
-
-            var arrayToDataTable_data_twitter = [ ['Username', 'Retweets'] ];
-
-            if(sorted_twitter_chart_data.length >=5){
-                var noMoreThanFive = 5;
-            } else {
-                var noMoreThanFive = sorted_twitter_chart_data.length;
-            }
-
-            for(var j = 0; j<noMoreThanFive; j++){
-
-                arrayToDataTable_data_twitter.push(["@"+sorted_twitter_chart_data[j].username, parseFloat(sorted_twitter_chart_data[j].retweets)]);
-
-            }
-
-            var twitter_chart_data = google.visualization.arrayToDataTable(arrayToDataTable_data_twitter);
-
-            var twitter_chart_options = {
-
-                legend: 'none',
-
-                title: 'Most Retweeted Tweets',
-
-                chartArea: {width: '100%'},
-
-                hAxis: {
-
-                  title: 'Number of Retweets',
-
-                  minValue: 0
-                }
-                ,vAxis: {
-                    minValue: 0
-                }
-            };
-
-            var twitter_chart = new google.visualization.BarChart(document.getElementById('twitter-comments-chart'));
-
-            twitter_chart.draw(twitter_chart_data, twitter_chart_options);
-
-}
-
-//using the OAuth authorization result get the latest 20 tweets from twitter for the user
-$scope.refreshTimeline = function(maxId) {
-    twitterService.getLatestTweets(maxId).then(function(data) {
-        $scope.tweets = $scope.tweets.concat(data);
-    }, function() {
-        $scope.rateLimitError = true;
-    });
-}
 
 //when the user clicks the connect twitter button, the popup authorization window opens
 $scope.connectButton = function() {

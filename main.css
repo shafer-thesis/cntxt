@@ -27,6 +27,9 @@ header{
 
 }
 
+.reddit-words-list{
+	
+}
 
 .footer{
 	height: 80px;
@@ -42,7 +45,7 @@ header{
 	width: 100px;
 }
 
-.twitter-stats{
+.twitter-stats, .reddit-stats{
 	background-color: white;
 	border-radius: 7px;
 }
@@ -197,7 +200,7 @@ border-radius: 5px;
 	float: right;
 }
 
-.twitter-card:hover, .reddit-card:hover, .twitter-stats:hover{
+.twitter-card:hover, .reddit-card:hover .twitter-stats:hover{
 	box-shadow: 2px 4px 2px #888888;
 }
 

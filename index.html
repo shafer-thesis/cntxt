@@ -44,7 +44,7 @@
             <input ng-model="url" id="urlInput" placeholder="paste a link here" />
             <button id="urlInput-button" ng-click="getAllData()" type= "button" class="btn btn-default" ng-disabled="url == null || !connectedTwitter">Search</button>
             <div ng-if="!connectedTwitter" ng-click="connectButton()" id="signIn">sign in with Twitter to start searching</div>
-            <div ng-if="invalidUrl" id="invalid">make sure it starts with "http" or "www"</div>
+            <div ng-if="invalidUrl" id="invalid">make sure your link starts with "http" or "www"</div>
         </div>
     </header> 
     <body class="body_content">
@@ -57,7 +57,16 @@
     <div>
 
     <div class="col-md-6">
-        <md-card class="reddit-card" ng-if="searchSent"><h1 class="column-labels">Reddit Comments</h1></md-card>
+        <md-card class="reddit-card" ng-if="searchSent"><h1 class="column-labels">Featured Reddit Comments</h1></md-card>
+        <md-card class="reddit-stats" ng-if="searchSent" id="reddit-stats">
+            <div class="stats-wrapper">
+                <h3> Frequent words in featured comments:</h3>
+                <ol>
+                    <li class="reddit-words-list" ng-repeat="wordholder in sortedWordsDict | limitTo: 5"><h4>"{{wordholder[0]}}" occurs {{wordholder[1]}} times</h4></li>
+                </ol>
+            </div>
+
+        </md-card>
         <md-card class="reddit-card" ng-repeat="comment in reddit.topcomments | orderBy: '-score' ">
             <div class="reddit-card-content-container">
                 <h4 class="reddit-comment-text">{{comment.body}}</h4>
@@ -74,13 +83,13 @@
     </div>
 
     <div class="col-md-6">
-        <md-card class="twitter-card" ng-if="searchSent"><h1 class="column-labels">Tweets</h1></md-card>
+        <md-card class="twitter-card" ng-if="searchSent"><h1 class="column-labels">Featured Tweets</h1></md-card>
         <md-card ng-if="searchSent" class="twitter-stats">
             <div class = "stats-wrapper">
                 <h3>Most recent 100 tweets in: {{timeMeasureToDisplay}}</h3>
                 <h3>Time since last tweet: {{timeSinceLastTweet}}</h3>
-                <h3>Highest number of RTs: {{highestRT}}</h3>
-                <h3>Highest number of FAVs: {{highestFAV}}</h3>
+                <h3>Highest number of Retweets: {{highestRT}}</h3>
+                <h3>Highest number of Favorites: {{highestFAV}}</h3>
             </div>
         </md-card>
         <md-card class="twitter-card" ng-repeat="t in tweets | orderBy: '-user.followers_count' | limitTo: '10' ">
