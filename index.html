@@ -86,7 +86,7 @@
         <md-card class="twitter-card" ng-if="searchSent"><h1 class="column-labels">Featured Tweets</h1></md-card>
         <md-card ng-if="searchSent" class="twitter-card">
             <div class = "stats-wrapper">
-                <h3>Most recent 100 tweets in: {{timeMeasureToDisplay}}</h3>
+                <h3>Most recent {{twitterResponseLength}} tweets in: {{timeMeasureToDisplay}}</h3>
                 <h3>Time since last tweet: {{timeSinceLastTweet}}</h3>
                 <h3>Highest number of Retweets: {{highestRT}}</h3>
                 <h3>Highest number of Favorites: {{highestFAV}}</h3>

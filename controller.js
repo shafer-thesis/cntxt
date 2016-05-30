@@ -105,7 +105,7 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
 
 function getTopComment(subreddit, id, score, number){
 
-        var ignore = ['and','the','to','a','of','for','as','i','with','it','is','on','that','this','can','in','be','has','if','was','at'];
+        var ignore = ['and','the','to','a','of','for','as','i','with','it','is','on','that','this','can','in','be','has','if','was','at', 'he', 'she', 'so'];
         var commentsToGet = 4;
         var minimumScore = 1;
         $scope.mostUsedWords = [];
@@ -183,6 +183,7 @@ function searchTweets(){
         $scope.highestFAV = 0;
         $scope.timeMeasureToDisplay = 'N/A';
         $scope.timeSinceLastTweet = 'N/A';
+        $scope.twitterResponseLength = 0;
 
         for(var i = 0; i < data.statuses.length; i++){
         
@@ -197,6 +198,7 @@ function searchTweets(){
 
         var firstTweet = new Date($scope.tweets[data.statuses.length-1].created_at);
         var lastTweet = new Date($scope.tweets[0].created_at);
+        $scope.twitterResponseLength = data.statuses.length;
 
         var timeDifferenceInSeconds = (Math.abs(firstTweet-lastTweet)/1000).toFixed(2);
         var timeDifferenceInMinutes = (timeDifferenceInSeconds/60).toFixed(2);
