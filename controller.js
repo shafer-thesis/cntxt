@@ -105,11 +105,12 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
 
 function getTopComment(subreddit, id, score, number){
 
-        var ignore = ['and','the','to','a','of','for','as','i','with','it','is','on','that','this','can','in','be','has','if','was','at', 'he', 'she', 'so'];
+        var ignore = ['are','also','and','the','to','a','of','for','as','i','with','it','is','on','that','this','can','in','be','has','if','was','at', 'he', 'she', 'so'];
         var commentsToGet = 4;
         var minimumScore = 1;
         $scope.mostUsedWords = [];
         $scope.wordsDictionary = {};
+        $scope.hashtags = [];
 
       // if(score > 50)
       //   {
@@ -126,7 +127,7 @@ function getTopComment(subreddit, id, score, number){
                     if(response.data[1].data.children[i].data.score > minimumScore){
                         $scope.reddit.topcomments.push(response.data[1].data.children[i].data);
                         var removePunctuation = (response.data[1].data.children[i].data.body.toLowerCase()).match(/\w+'*\w*/g);//.replace(/[.,\/#!$%\^&\**;:{}=\-_`~\(()+|><?@[]]/g,"");
-                        //console.log(removePunctuation);
+
                         for(var j=0; j < removePunctuation.length; j++){
                                 $scope.mostUsedWords.push(removePunctuation[j]);
                         }
@@ -154,15 +155,6 @@ function getTopComment(subreddit, id, score, number){
                 return second[1] - first[1];
             });
 
-            // for(var m=0; m<sortedWordsDict.length; m++){
-            //     var s = sortedWordsDict[m][0];
-            //     //if(ignore.indexOf(s) === -1){
-            //         console.log(sortedWordsDict[m]);
-
-            //     //}
-            // }
-
-            //console.log(sortedWordsDict);
         }, 500);
 
         }); //end .then function
@@ -184,6 +176,8 @@ function searchTweets(){
         $scope.timeMeasureToDisplay = 'N/A';
         $scope.timeSinceLastTweet = 'N/A';
         $scope.twitterResponseLength = 0;
+        var hashtagArray = [];
+        var hashtagsDict = {};
 
         for(var i = 0; i < data.statuses.length; i++){
         
@@ -194,7 +188,38 @@ function searchTweets(){
             if(tweet.favorite_count > $scope.highestFAV){
                 $scope.highestFAV = tweet.favorite_count;
             }
+            for(var x = 0; x < tweet.entities.hashtags.length; x++){
+
+                hashtagArray.push(tweet.entities.hashtags[x].text);
+                //console.log(hashtag);
+
+
+            }
         }
+        $timeout(function(){
+            for(var k=0; k<hashtagArray.length; k++){
+                var hashtag = hashtagArray[k];
+
+
+                if(!hashtagsDict[hashtag]){
+                    hashtagsDict[hashtag] = 1;
+                } else {
+                    hashtagsDict[hashtag] += 1;
+                }
+            }
+            $scope.hashtags = Object.keys(hashtagsDict).map(function(key) {
+                return [key, hashtagsDict[key]];
+            });
+
+            // Sort the array based on the second element
+            $scope.hashtags.sort(function(first, second) {
+                return second[1] - first[1];
+            });
+
+
+        }, 500);
+
+
 
         var firstTweet = new Date($scope.tweets[data.statuses.length-1].created_at);
         var lastTweet = new Date($scope.tweets[0].created_at);

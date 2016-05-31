@@ -90,6 +90,10 @@
                 <h3>Time since last tweet: {{timeSinceLastTweet}}</h3>
                 <h3>Highest number of Retweets: {{highestRT}}</h3>
                 <h3>Highest number of Favorites: {{highestFAV}}</h3>
+                <h3>Frequently used hashtags:</h3>
+                <ol>
+                    <li class = "hashtags-list" ng-repeat="hashtag in hashtags | limitTo: '5'"><a ng-href="https://www.twitter.com/hashtag/{{hashtag[0]}}">#{{hashtag[0]}}</a></li>
+                </ol>
             </div>
         </md-card>
         <md-card class="twitter-card" ng-repeat="t in tweets | orderBy: '-user.followers_count' | limitTo: '10' ">

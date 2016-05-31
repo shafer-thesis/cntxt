@@ -27,8 +27,8 @@ header{
 
 }
 
-.reddit-words-list{
-
+.reddit-words-list, .hashtags-list{
+	font-size: 1.2em;
 }
 
 .footer{
