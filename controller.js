@@ -5,6 +5,8 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
     $scope.url = null
     $scope.searchSent = false;
     $scope.invalidUrl = false;
+    $scope.showAboutBox = false;
+    $scope.aboutDisplayText = 'About';
 
     document.getElementById("urlInput")
     .addEventListener("keyup", function(event) {
@@ -13,6 +15,22 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
         document.getElementById("urlInput-button").click();
     	}
 	});
+
+    $scope.showAbout = function(){
+        window.scrollTo(500,0);
+        if(!$scope.showAboutBox){
+            $scope.showAboutBox = true;
+            $scope.aboutDisplayText = 'Close';
+        } else {
+            $scope.showAboutBox = false;
+            $scope.aboutDisplayText = 'About';
+        }
+    };
+
+    $scope.closeAboutBox = function(){
+        $scope.showAboutBox = false;
+        $scope.aboutDisplayText = 'About';
+    }
 
     $scope.getAllData = function(){
 
@@ -30,7 +48,7 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
         } else {
             $scope.invalidUrl = true;
         }
-    }
+    };
 
 
 function getRedditData(){
@@ -183,12 +201,7 @@ function searchTweets(){
                 return second[1] - first[1];
             });
 
-
-
-
-        console.log(t);
-
-
+        //console.log(t);
         twttr.widgets.createTweet(t[0], document.getElementById('object-0'), {align: "center"});
         twttr.widgets.createTweet(t[1], document.getElementById('object-1'), {align: "center"});
         twttr.widgets.createTweet(t[2], document.getElementById('object-2'), {align: "center"});
@@ -198,6 +211,7 @@ function searchTweets(){
         twttr.widgets.createTweet(t[6], document.getElementById('object-6'), {align: "center"});
 
 
+        $scope.allDone = true;
 
         }, 500);
 
@@ -259,6 +273,7 @@ $scope.connectButton = function() {
 
 //sign out clears the OAuth cache, the user will have to reauthenticate when returning
 $scope.signOut = function() {
+    window.scrollTo(500,0);
     twitterService.clearCache();
     $scope.tweets.length = 0;
     $('#getTimelineButton, #signOut').fadeOut(function() {

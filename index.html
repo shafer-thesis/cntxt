@@ -33,11 +33,16 @@
 
 
     <title>cntxt</title>  
+    <button ng-click="showAbout()" id="about" type='button' class="btn btn-default">{{aboutDisplayText}}</button>
     <button ng-click="connectButton()" id="connectButton" type="button" class="btn btn-default">Sign in with Twitter</button>
     <button ng-click="signOut()" id="signOut" type="button" class="btn btn-default" style="display:none;">Sign Out</button>
 
     <header>
 
+        <div ng-if="showAboutBox" id="aboutBox">
+            <h1><b>About cntxt</b></h1><h1 id='close' ng-click="closeAboutBox()">X</h1>
+            <p> Welcome to cntxt, a tool for connecting online articles with active discussions about them online. The best content doesn't always have an obvious link to the best conversations, and cntxt builds a bridge between them. Simply sign in with Twitter, paste a link to an article below, and hit the search button to get your results from places like Twitter and Reddit. </p>
+        </div>
 
         <div id="main_title">
             <h1>cntxt</h1>
@@ -45,6 +50,7 @@
             <input type="button" ng-if="!connectedTwitter" ng-click="connectButton()" id="signIn" value="sign in with Twitter to start searching"></div>
             <div ng-if="invalidUrl" id="invalid">make sure your link starts with "http" or "www"</div>
         </div>
+
 
         <div id="main_input" ng-show="connectedTwitter">
             <input ng-model="url" id="urlInput" placeholder="paste a link here" />
@@ -114,9 +120,13 @@
 
     
 
+            </div>
         </div>
         <br>
-    </div>
+
+        <div class="footer" ng-if='searchSent && allDone'>
+            <p>cntxt was developed by Travis Shafer as part of his Master's Thesis in Journalism at Stanford University</p>
+        </div>
 
     </body>
 </html>
