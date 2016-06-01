@@ -2,6 +2,7 @@
     <html ng-app="cntxt" ng-controller="controller">
     <!-- load angular -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
 
     <!-- load angular-material js and css -->
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc5/angular-material.min.css">
@@ -15,6 +16,7 @@
 
     <!-- load chart resource -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src = "http://requirejs.org/docs/release/2.2.0/minified/require.js"></script>
 
     <!-- twitter api stuff -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -23,10 +25,9 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="twitter_api/oauth.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-sanitize.js"></script>
-    <!-- <script src="twitter_api/app.js"></script> -->
-    <!-- <script src="twitter_api/controllers.js"></script> -->
+
     <script src="twitter_api/services.js"></script>
-    <!-- <link rel="stylesheet" href="front_page/front_page.css"> -->
+
 
 
     <title>cntxt</title>  
@@ -38,23 +39,24 @@
         <div id="main_title">
             <h1>cntxt</h1>
             <h2>connecting content and conversation</h2>
+            <input type="button" ng-if="!connectedTwitter" ng-click="connectButton()" id="signIn" value="sign in with Twitter to start searching"></div>
+            <div ng-if="invalidUrl" id="invalid">make sure your link starts with "http" or "www"</div>
         </div>
 
-        <div id="main_input">
+        <div id="main_input" ng-show="connectedTwitter">
             <input ng-model="url" id="urlInput" placeholder="paste a link here" />
             <button id="urlInput-button" ng-click="getAllData()" type= "button" class="btn btn-default" ng-disabled="url == null || !connectedTwitter">Search</button>
-            <div ng-if="!connectedTwitter" ng-click="connectButton()" id="signIn">sign in with Twitter to start searching</div>
-            <div ng-if="invalidUrl" id="invalid">make sure your link starts with "http" or "www"</div>
+
         </div>
     </header> 
     <body class="body_content">
 
-    <div class="col-md-12">
+<!--     <div class="col-md-12">
         <md-card ng-if="searchSent" class="reddit-card">
             <h3 id="reddit-chart-title">Top conversations on Reddit</h3>
             <div id="reddit-comments-chart"></div>
         </md-card>
-    <div>
+    <div> -->
 
     <div class="col-md-6">
         <md-card class="reddit-card" ng-if="searchSent"><h1 class="column-labels">Featured Reddit Comments</h1></md-card>
@@ -62,14 +64,14 @@
             <div class="stats-wrapper">
                 <h3> Frequent words in featured comments:</h3>
                 <ol>
-                    <li class="reddit-words-list" ng-repeat="wordholder in sortedWordsDict | limitTo: 5"><h4>"{{wordholder[0]}}" occurs {{wordholder[1]}} times</h4></li>
+                    <li class="reddit-words-list" ng-repeat="wordholder in sortedWordsDict | limitTo: 5"><h4>"{{wordholder[0]}}"</h4></li>
                 </ol>
             </div>
 
         </md-card>
         <md-card class="reddit-card" ng-repeat="comment in reddit.topcomments | orderBy: '-score' ">
             <div class="reddit-card-content-container">
-                <h4 class="reddit-comment-text">{{comment.body}}</h4>
+                <div class="reddit-comment-text" ng-bind-html="comment.body | markdown"></div>
                 <h5 class="reddit-comment-details"> -{{comment.author}} in 
                     <a target="_blank" ng-href="http://www.reddit.com/r/{{comment.subreddit}}">/r/{{comment.subreddit}}</a>
                     Score: {{comment.score}}

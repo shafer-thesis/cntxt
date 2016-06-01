@@ -37,13 +37,12 @@ header{
 
 #seeReplies{
 	float: center;
-	margin-right: 25px;
-	margin-left: 10px;
+	margin-top: 0px;
 }
 
 #seeReplies button{
 	height: auto;
-	width: 90px;
+	width: 100px;
 }
 
 .twitter-stats, .reddit-stats{
@@ -56,14 +55,21 @@ header{
 	padding: 15px 15px 15px 15px;
 }
 
-
-.reddit-comment-text, .column-labels{
-	padding: 15px 15px 15px 15px;
+.reddit-comment-text{
+	padding: 15px 15px 0px 15px;
 	font-weight: bold;
+
 }
 
 .column-labels{
 	text-align: center;
+	padding: 15px 15px 15px 15px;
+	font-weight: bold;
+	
+}
+
+.reddit-comment-text{
+	font-size: 1.2em;
 }
 
 .twitter-card-text{
@@ -72,7 +78,8 @@ header{
 }
 
 .reddit-comment-details, .twitter-card-details{
-	padding-left: 22%;
+	text-align: center;
+	font-size: 1.1em;
 }
 
 
@@ -102,6 +109,7 @@ header{
 	background: rgba(215,215,215,0.65);
 	border-radius: 10px;
 	font-family: HiraginoSans-W4, Sans-Serif;
+	padding: 10px 10px 10px 10px;
 }
 
 #main_title h1{

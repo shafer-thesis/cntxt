@@ -1,6 +1,8 @@
 var app = angular.module('cntxt', ['ngSanitize','cntxt.services']);
 
-app.controller('controller', function($scope, $http, $q, twitterService, $timeout) {
+app.controller('controller', function($scope, $http, $q, twitterService, $timeout, $sce){
+
+    $scope.input = "<p>hello!</p>";
 
     $scope.url = null
     $scope.searchSent = false;
@@ -22,20 +24,20 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
             $scope.searchSent = true;
             $scope.invalidUrl = false;
             $scope.sortedWordsDict = {};
+            $scope.mostUsedWords = [];
+            $scope.wordsDictionary = {};    
+            $scope.hashtags = [];
+            var hashtagArray = [];
+            var hashtagsDict = {};
         } else {
             $scope.invalidUrl = true;
         }
     }
 
-    //load google charts for making charts
-    google.charts.load('current', {packages: ['corechart', 'bar']});
 
    function getRedditData(){
-   		//this function also gathers the reddit_chart data and vizualizes it
 
-        $scope.trimmedUrl = $scope.url.split('?');
-
-  		$http.get("http://www.reddit.com/api/info.json?url=" + $scope.trimmedUrl[0])
+  		$http.get("http://www.reddit.com/api/info.json?url=" + $scope.url)
        		 .then(function(response){
 
             $scope.redditResponse = response.data;
@@ -46,58 +48,11 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
             
             for(var i = 0;i<$scope.redditResponse['data']['children'].length; i++){
                 var listing = $scope.redditResponse['data']['children'][i]['data'];
-                $scope.reddit_chart_data.push({comments: listing.num_comments, subreddit: listing.subreddit});
                 if (listing.num_comments > 0){
                     
                     	listing.topcomment = getTopComment(listing.subreddit, listing.id, listing.score, i);
                 	}		
         		}
-
-        	//sort chart data and format it correctly	
-        	var sorted_chart_data = $scope.reddit_chart_data.slice(0);
-
-			sorted_chart_data.sort(function(a,b){return b.comments-a.comments});
-
-			var arrayToDataTable_data = [ ['Subreddit', 'Number of Comments'] ];
-
-			if(sorted_chart_data.length >=5){
-				var noMoreThanFive = 5;
-			} else {
-				var noMoreThanFive = sorted_chart_data.length;
-			}
-
-			for(var j = 0; j<noMoreThanFive; j++){
-
-				arrayToDataTable_data.push(["/r/"+sorted_chart_data[j].subreddit, parseFloat(sorted_chart_data[j].comments)]);
-
-			}
-
-			var reddit_chart_data = google.visualization.arrayToDataTable(arrayToDataTable_data);
-
-			var reddit_chart_options = {
-
-                legend: 'none',
-
-                backgroundColor: {stroke:'null', fill:'null', strokeSize: '0'},
-
-		        chartArea: {width: '80%', backgroundColor: 'transparent'},
-
-                colors: ['#7BDBC5'],
-
-		        hAxis: {
-
-		          title: 'Number of Comments',
-
-		          minValue: 0
-		        }
-
-                //backgroundColor:{fill: 'transparent'}
-		        //,vAxis: {}
-		    };
-
-      		var reddit_chart = new google.visualization.BarChart(document.getElementById('reddit-comments-chart'));
-
-      		reddit_chart.draw(reddit_chart_data, reddit_chart_options);
 
   			}); //end .then function
 
@@ -105,7 +60,7 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
 
 function getTopComment(subreddit, id, score, number){
 
-        var ignore = ['are','also','and','the','to','a','of','for','as','i','with','it','is','on','that','this','can','in','be','has','if','was','at', 'he', 'she', 'so'];
+        var ignore = ['not','or',"i'm",'0','1','2','3','4','5','6','7','8','9','are','also','but','and','the','to','a','of','for','as','i','with','it','is','on','that','this','can','in','be','has','if','was','at', 'he', 'she', 'so'];
         var commentsToGet = 4;
         var minimumScore = 1;
         $scope.mostUsedWords = [];
@@ -168,7 +123,7 @@ $scope.tweets = []; //array of tweets
 twitterService.initialize();
 
 function searchTweets(){
-    twitterService.getMatchingTweets($scope.trimmedUrl[0]).then(function(data){
+    twitterService.getMatchingTweets($scope.url).then(function(data){
         //console.log(data);
         $scope.tweets = data.statuses;
         $scope.highestRT = 0;
@@ -260,14 +215,13 @@ $scope.connectButton = function() {
     twitterService.connectTwitter().then(function() {
         if (twitterService.isReady()) {
             //if the authorization is successful, hide the connect button and display the tweets
+            $scope.connectedTwitter = true;
+            $('#main_input').fadeIn();
             $('#connectButton').fadeOut(function() {
-                $('#getTimelineButton, #signOut').fadeIn();
-                $('#signIn').fadeOut();
-                $('#urlInput-button').fadeIn();
-                $scope.connectedTwitter = true;
+            $('#signOut').fadeIn();
+            $('#signIn').fadeOut();
+                
             });
-        } else {
-
         }
     });
 }
@@ -292,7 +246,13 @@ if (twitterService.isReady()) {
     //$scope.refreshTimeline();
 }
 
+})//;
+
+.filter('markdown', function(){
+    var converter = new Showdown.converter();
+    return converter.makeHtml;
 });
+
 
 
 
