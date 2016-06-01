@@ -19,14 +19,16 @@
     <script type="text/javascript" src = "http://requirejs.org/docs/release/2.2.0/minified/require.js"></script>
 
     <!-- twitter api stuff -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link rel="icon" href="http://previews.123rf.com/images/koya79/koya791305/koya79130500251/19775933-letter-c-alphabet-cubes-font-Stock-Photo.jpg">
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script src="twitter_api/oauth.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-sanitize.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="oauth.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.6/angular-sanitize.js"></script>
 
-    <script src="twitter_api/services.js"></script>
+    <script src="services.js"></script>
+    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
 
@@ -35,6 +37,7 @@
     <button ng-click="signOut()" id="signOut" type="button" class="btn btn-default" style="display:none;">Sign Out</button>
 
     <header>
+
 
         <div id="main_title">
             <h1>cntxt</h1>
@@ -51,16 +54,10 @@
     </header> 
     <body class="body_content">
 
-<!--     <div class="col-md-12">
-        <md-card ng-if="searchSent" class="reddit-card">
-            <h3 id="reddit-chart-title">Top conversations on Reddit</h3>
-            <div id="reddit-comments-chart"></div>
-        </md-card>
-    <div> -->
-
     <div class="col-md-6">
-        <md-card class="reddit-card" ng-if="searchSent"><h1 class="column-labels">Featured Reddit Comments</h1></md-card>
-        <md-card class="reddit-card" ng-if="searchSent" id="reddit-stats">
+        <md-card class="reddit-card" ng-if="!redditResponseExists && searchSent"><h1 class="column-labels">Reddit returned no results</h1></md-card>
+        <md-card class="reddit-card" ng-if="redditResponseExists"><h1 class="column-labels">Featured Reddit Comments</h1></md-card>
+        <md-card class="reddit-card" ng-if="redditResponseExists" id="reddit-stats">
             <div class="stats-wrapper">
                 <h3> Frequent words in featured comments:</h3>
                 <ol>
@@ -85,10 +82,11 @@
     </div>
 
     <div class="col-md-6">
-        <md-card class="twitter-card" ng-if="searchSent"><h1 class="column-labels">Featured Tweets</h1></md-card>
-        <md-card ng-if="searchSent" class="twitter-card">
+        <md-card class="twitter-card" ng-if="!twitterResponseExists && searchSent"><h1 class="column-labels">Twitter returned no results</h1></md-card>
+        <md-card class="twitter-card" ng-if="twitterResponseExists"><h1 class="column-labels">Featured Tweets</h1></md-card>
+        <md-card ng-if="twitterResponseExists" class="twitter-card">
             <div class = "stats-wrapper">
-                <h3>Most recent {{twitterResponseLength}} tweets in: {{timeMeasureToDisplay}}</h3>
+                <h3>Current Tweets per Minute: {{tweetsPerMinute}}</h3>
                 <h3>Time since last tweet: {{timeSinceLastTweet}}</h3>
                 <h3>Highest number of Retweets: {{highestRT}}</h3>
                 <h3>Highest number of Favorites: {{highestFAV}}</h3>
@@ -98,11 +96,11 @@
                 </ol>
             </div>
         </md-card>
-        <md-card class="twitter-card" ng-repeat="t in tweets | orderBy: '-user.followers_count' | limitTo: '10' ">
-
-<!--                 <div class="col-xs-2 col-sm-1">
+        <div ng-attr-id="{{ 'object-' + $index }}" ng-repeat="t in [0,1,2,3,4,5,6,7]">
+<!-- 
+                <div class="col-xs-2 col-sm-1">
                 <img ng-src="{{t.user.profile_image_url}}" class="img-circle">
-            </div> -->
+            </div>
             <div class="col-xs-10 col-sm-11">
             <div class="twitter-content">
                 <img ng-src="{{t.user.profile_image_url}}" class="img-circle">
@@ -110,9 +108,13 @@
                     <br><h5 class="twitter-card-details"><a ng-href="https://twitter.com/{{t.user.screen_name}}"> @{{t.user.screen_name}}</a> | Followers: {{t.user.followers_count}}  | RTs: {{t.retweet_count}} | Favs: {{t.favorite_count}}</h5>
 
                 </div>
-            </div>
+            </div> -->
+<!--                 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">{{t.text}}</p>&mdash; {{t.user.name}} (@{{t.user.screen_name}}) <a ng-href="https://twitter.com/statuses/{{t.id_str}}">{{t.created_at}}</a></blockquote> -->
 
-        </md-card>
+
+    
+
+        </div>
         <br>
     </div>
 

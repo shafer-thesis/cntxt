@@ -1,8 +1,6 @@
 var app = angular.module('cntxt', ['ngSanitize','cntxt.services']);
 
-app.controller('controller', function($scope, $http, $q, twitterService, $timeout, $sce){
-
-    $scope.input = "<p>hello!</p>";
+app.controller('controller', function($scope, $http, $q, twitterService, $timeout){
 
     $scope.url = null
     $scope.searchSent = false;
@@ -35,44 +33,43 @@ app.controller('controller', function($scope, $http, $q, twitterService, $timeou
     }
 
 
-   function getRedditData(){
+function getRedditData(){
 
-  		$http.get("http://www.reddit.com/api/info.json?url=" + $scope.url)
-       		 .then(function(response){
+	$http.get("http://www.reddit.com/api/info.json?url=" + $scope.url)
+		 .then(function(response){
 
-            $scope.redditResponse = response.data;
+    $scope.redditResponse = response.data;
 
-            $scope.reddit = [];
-            $scope.reddit.topcomments = [];
-            $scope.reddit_chart_data = [];
+    $scope.reddit = [];
+    $scope.reddit.topcomments = [];
+    $scope.reddit_chart_data = [];
+    
+if($scope.redditResponse['data']['children'].length > 0){
+    $scope.redditResponseExists = true;
+    for(var i = 0;i<$scope.redditResponse['data']['children'].length; i++){
+        var listing = $scope.redditResponse['data']['children'][i]['data'];
+        if (listing.num_comments > 0){
             
-            for(var i = 0;i<$scope.redditResponse['data']['children'].length; i++){
-                var listing = $scope.redditResponse['data']['children'][i]['data'];
-                if (listing.num_comments > 0){
-                    
-                    	listing.topcomment = getTopComment(listing.subreddit, listing.id, listing.score, i);
-                	}		
-        		}
+            	listing.topcomment = getTopComment(listing.subreddit, listing.id, listing.score, i);
+        	}		
+		}
+    } else {
+        $scope.redditResponseExists = false;
+    }
 
-  			}); //end .then function
+		}); //end .then function
 
-    }// end getRedditData
+}// end getRedditData
 
 function getTopComment(subreddit, id, score, number){
 
-        var ignore = ['not','or',"i'm",'0','1','2','3','4','5','6','7','8','9','are','also','but','and','the','to','a','of','for','as','i','with','it','is','on','that','this','can','in','be','has','if','was','at', 'he', 'she', 'so'];
+        var ignore = ['www','not','or',"i'm",'are','also','but','and','the','to','a','of','for','as','i','with','it','is','on','that','this','can','in','be','has','if','was','at', 'he', 'she', 'so'];
         var commentsToGet = 4;
         var minimumScore = 1;
         $scope.mostUsedWords = [];
         $scope.wordsDictionary = {};
         $scope.hashtags = [];
 
-      // if(score > 50)
-      //   {
-      //       commentsToGet = 2;
-      //   } else {
-      //       commentsToGet = 1;
-      //   }
     var commentUrl = "https://www.reddit.com/r/" + subreddit + "/comments/" + id + ".json?sort=top&limit=" + commentsToGet;
      
     $http.get(commentUrl)
@@ -93,7 +90,7 @@ function getTopComment(subreddit, id, score, number){
         $timeout(function(){
             for(var k=0; k<$scope.mostUsedWords.length; k++){
                 var word = $scope.mostUsedWords[k];
-                if(ignore.indexOf(word) === -1){
+                if(ignore.indexOf(word) === -1 && word.length > 1){
                     if(!$scope.wordsDictionary[word]){
                         $scope.wordsDictionary[word] = 1;
                     } else {
@@ -126,6 +123,7 @@ function searchTweets(){
     twitterService.getMatchingTweets($scope.url).then(function(data){
         //console.log(data);
         $scope.tweets = data.statuses;
+
         $scope.highestRT = 0;
         $scope.highestFAV = 0;
         $scope.timeMeasureToDisplay = 'N/A';
@@ -133,12 +131,25 @@ function searchTweets(){
         $scope.twitterResponseLength = 0;
         var hashtagArray = [];
         var hashtagsDict = {};
+        var t = [];
+
+        if(data.statuses.length > 0){
+            $scope.twitterResponseExists = true;
+        } else{
+            $scope.twitterResponseExists = false;
+        }
+
+        var used = {};
 
         for(var i = 0; i < data.statuses.length; i++){
+
         
             var tweet = data.statuses[i];
+            t.push(tweet.id_str);
+            //twttr.widgets.create(tweet.id_str, document.getElementById('tryme'), {theme: 'dark'});
             if(tweet.retweet_count > $scope.highestRT){
                 $scope.highestRT = tweet.retweet_count;
+
             }
             if(tweet.favorite_count > $scope.highestFAV){
                 $scope.highestFAV = tweet.favorite_count;
@@ -151,6 +162,7 @@ function searchTweets(){
 
             }
         }
+    
         $timeout(function(){
             for(var k=0; k<hashtagArray.length; k++){
                 var hashtag = hashtagArray[k];
@@ -172,10 +184,27 @@ function searchTweets(){
             });
 
 
+
+
+        console.log(t);
+
+
+        twttr.widgets.createTweet(t[0], document.getElementById('object-0'), {align: "center"});
+        twttr.widgets.createTweet(t[1], document.getElementById('object-1'), {align: "center"});
+        twttr.widgets.createTweet(t[2], document.getElementById('object-2'), {align: "center"});
+        twttr.widgets.createTweet(t[3], document.getElementById('object-3'), {align: "center"});
+        twttr.widgets.createTweet(t[4], document.getElementById('object-4'), {align: "center"});
+        twttr.widgets.createTweet(t[5], document.getElementById('object-5'), {align: "center"});
+        twttr.widgets.createTweet(t[6], document.getElementById('object-6'), {align: "center"});
+
+
+
         }, 500);
 
 
 
+
+    
         var firstTweet = new Date($scope.tweets[data.statuses.length-1].created_at);
         var lastTweet = new Date($scope.tweets[0].created_at);
         $scope.twitterResponseLength = data.statuses.length;
@@ -187,6 +216,8 @@ function searchTweets(){
         var timeSinceLastTweet_s = (Math.abs(lastTweet-new Date())/1000).toFixed(2);
         var timeSinceLastTweet_m = (timeSinceLastTweet_s/60).toFixed(2);
         var timeSinceLastTweet_h = (timeSinceLastTweet_m/60).toFixed(2);
+
+        $scope.tweetsPerMinute = (data.statuses.length/timeDifferenceInMinutes).toFixed(2);
 
         if(timeDifferenceInHours >= 1){
             $scope.timeMeasureToDisplay = timeDifferenceInHours.toString()+' hours';

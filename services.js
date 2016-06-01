@@ -26,7 +26,7 @@ angular.module('cntxt.services', []).factory('twitterService', function($q) {
                     deferred.resolve();
                 } else {
                     //do something if there's an error
-                    Console.log("There was an error processing this request.")
+                    console.log("There was an error processing this request.", error);
 
                 }
             });
@@ -36,23 +36,23 @@ angular.module('cntxt.services', []).factory('twitterService', function($q) {
             OAuth.clearCache('twitter');
             authorizationResult = false;
         },
-        getLatestTweets: function(maxId) {
-            //create a deferred object using Angular's $q service
-            var deferred = $q.defer();
-            var url = '/1.1/statuses/home_timeline.json';
-            if (maxId) {
-                url += '?max_id=' + maxId;
-            }
-            var promise = authorizationResult.get(url).done(function(data) {
-                // https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline
-                // when the data is retrieved resolve the deferred object
-                deferred.resolve(data);
-            }).fail(function(err) {
-                deferred.reject(err);
-            });
-            //return the promise of the deferred object
-            return deferred.promise;
-        },
+        // getLatestTweets: function(maxId) {
+        //     //create a deferred object using Angular's $q service
+        //     var deferred = $q.defer();
+        //     var url = '/1.1/statuses/home_timeline.json';
+        //     if (maxId) {
+        //         url += '?max_id=' + maxId;
+        //     }
+        //     var promise = authorizationResult.get(url).done(function(data) {
+        //         // https://dev.twitter.com/docs/api/1.1/get/statuses/home_timeline
+        //         // when the data is retrieved resolve the deferred object
+        //         deferred.resolve(data);
+        //     }).fail(function(err) {
+        //         deferred.reject(err);
+        //     });
+        //     //return the promise of the deferred object
+        //     return deferred.promise;
+        // },
         getMatchingTweets: function(inputUrl){
             var deferred = $q.defer();
             var url = '/1.1/search/tweets.json';
